@@ -1,24 +1,50 @@
 import css from "./ProfilePage.module.css";
+import Image from "next/image";
+import Link from "next/link";
+import { Metadata } from "next";
+import { getMe } from "@/lib/api/serverApi";
 
-const Profile = () => {
+export const metadata: Metadata = {
+  title: "Profile",
+  description:
+    "User profile page with personal information and account settings",
+  openGraph: {
+    title: "Profile",
+    description:
+      "User profile page with personal information and account settings",
+    url: "https://07-routing-nextjs-rust-nu.vercel.app/notes/action/create",
+    images: [
+      {
+        url: "https://ac.goit.global/fullstack/react/notehub-og-meta.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Profile",
+      },
+    ],
+  },
+};
+
+const Profile = async () => {
+  const profileData = await getMe();
+
   return (
     <>
       <main className={css.mainContent}>
         <div className={css.profileCard}>
           <div className={css.header}>
             <h1 className={css.formTitle}>Profile Page</h1>
-            <a src="" className={css.editProfileButton}>
+            <Link href={"./edit"} className={css.editProfileButton}>
               Edit Profile
-            </a>
+            </Link>
           </div>
           <div className={css.avatarWrapper}>
-            <img
-              src="Avatar"
+            <Image
+              src={profileData.avatar}
               alt="User Avatar"
               width={120}
               height={120}
               className={css.avatar}
-            />
+            ></Image>
           </div>
           <div className={css.profileInfo}>
             <p>Username: your_username</p>
