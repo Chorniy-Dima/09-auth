@@ -2,6 +2,7 @@ import axios from "axios";
 import type { Note, NoteMin } from "@/types/note.ts";
 
 const myKey = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
+const baseUrl = process.env.NEXT_PUBLIC_API_URL + "/api";
 
 interface fullResp {
   notes: Note[];
