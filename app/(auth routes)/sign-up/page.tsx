@@ -4,6 +4,7 @@ import css from "./SignUpPage.module.css";
 import { authProps, register } from "@/lib/api/clientApi";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/lib/store/authStore";
 
 export interface ApiError {
   message: string;
@@ -18,6 +19,7 @@ export interface ApiError {
 const SignUp = () => {
   const router = useRouter();
   const [error, setError] = useState("");
+  const setUser = useAuthStore((state) => state.setUser);
 
   const handleSubmit = async (formData: FormData) => {
     try {
@@ -25,8 +27,8 @@ const SignUp = () => {
       const res = await register(formValues);
       if (res) {
         setError("");
+        setUser(res);
         router.push("/profile");
-        console.log(res);
       } else {
         setError("Invalid email or password");
       }

@@ -5,19 +5,20 @@ import css from "./SignInPage.module.css";
 import { login, authProps } from "@/lib/api/clientApi";
 import { useState } from "react";
 import { ApiError } from "../sign-up/page";
+import { useAuthStore } from "@/lib/store/authStore";
 
 const SingIn = () => {
   const router = useRouter();
   const [error, setError] = useState("");
+  const setUser = useAuthStore((state) => state.setUser);
 
   const handleSubmit = async (formData: FormData) => {
     try {
       const formValues = Object.fromEntries(formData) as unknown as authProps;
       const res = await login(formValues);
       if (res) {
-        setError("");
+        setUser(res);
         router.push("/profile");
-        console.log(res);
       } else {
         setError("Invalid email or password");
       }
