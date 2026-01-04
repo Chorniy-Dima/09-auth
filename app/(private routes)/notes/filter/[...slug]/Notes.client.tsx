@@ -19,7 +19,7 @@ const NotesClient = ({ slug }: NotesClientProps) => {
   const [name, setName] = useState("");
   const [page, setPage] = useState(1);
 
-  const category = slug?.[0] === "all" ? undefined : slug?.[0];
+  const category = slug?.[0] === "all" ? "" : slug?.[0] ?? "";
 
   const handleChange = useDebouncedCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -30,7 +30,7 @@ const NotesClient = ({ slug }: NotesClientProps) => {
   );
 
   const { data } = useQuery({
-    queryKey: ["notes", name, page, slug?.[0]],
+    queryKey: ["notes", name, page, category],
     queryFn: () => fetchNotes(name, page, category),
     placeholderData: keepPreviousData,
   });
@@ -51,7 +51,9 @@ const NotesClient = ({ slug }: NotesClientProps) => {
             Create note +
           </Link>
         </header>
-        <NoteList notes={data?.notes ?? []} />
+        {data?.notes && data.notes.length > 0 && (
+          <NoteList notes={data.notes} />
+        )}
       </div>
     </>
   );

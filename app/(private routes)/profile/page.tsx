@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Metadata } from "next";
 import { getMe } from "@/lib/api/serverApi";
-import { checkSession } from "@/lib/api/serverApi";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Profile",
@@ -26,10 +26,11 @@ export const metadata: Metadata = {
 };
 
 const Profile = async () => {
-  await checkSession();
   const user = await getMe();
 
-  if (!user) return <p>Loading...</p>;
+  if (!user) {
+    redirect("/sign-in");
+  }
 
   return (
     <>
